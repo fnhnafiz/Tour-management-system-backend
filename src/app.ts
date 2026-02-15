@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 
 import cors from "cors";
 import { router } from "./Routes";
-import { envSetupVars } from "./app/config/env";
+
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
+import notFoundRoute from "./app/middlewares/notFound";
 
 const app = express();
 
@@ -21,4 +22,6 @@ app.get("/", (req: Request, res: Response) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use(globalErrorHandler);
+
+app.use(notFoundRoute);
 export default app;

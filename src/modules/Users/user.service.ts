@@ -3,14 +3,32 @@ import { User } from "./user.model";
 
 const createUser = async (payload: Partial<IUser>) => {
   const { email, name } = payload;
-  const user = await User.create({
+  const users = await User.create({
     name,
     email,
   });
+  const totalUser = await User.countDocuments();
 
-  return user;
+  return {
+    data: users,
+    meta: {
+      total: totalUser,
+    },
+  };
 };
 
-export const UserServices={
-    createUser
-}
+const getAllUsers = async () => {
+  const allUsers = await User.find({});
+  const totalUser = await User.countDocuments();
+  return {
+    data: allUsers,
+    meta: {
+      total: totalUser,
+    },
+  };
+};
+
+export const UserServices = {
+  createUser,
+  getAllUsers,
+};

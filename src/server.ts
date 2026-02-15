@@ -5,20 +5,15 @@ import app from "./app";
 import { envSetupVars } from "./app/config/env";
 let server: Server;
 
-
-
-
 const startServer = async () => {
   try {
     // console.log(envSetupVars.NODE_ENV)
-    await mongoose.connect(
-      envSetupVars.DB_URL
-    );
+    await mongoose.connect(envSetupVars.DB_URL);
     // eslint-disable-next-line no-console
     console.log("connected to db");
     server = app.listen(5000, () => {
       // eslint-disable-next-line no-console
-      console.log("Server is listening to port 5000");
+      console.log("Server is listening to port 5000😒😎");
     });
   } catch (error) {
     // eslint-disable-next-line no-console
