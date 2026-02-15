@@ -1,30 +1,46 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { UserServices } from "./user.service";
+import { catchAsync } from "../../app/utils/catchAsync";
+import { sendResponse } from "../../app/utils/sendResponse";
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // const { email, name } = req.body;
-    // const user = await User.create({
-    //   name,
-    //   email,
+const createUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const users = await UserServices.createUser(req.body);
+    // res.status(httpStatus.CREATED).json({
+    //   message: "User created succesfully",
+    //   user,
     // });
-    // throw new Error("Fake Error for testing global error handler!!");
-    const user = await UserServices.createUser(req.body);
-    res.status(httpStatus.CREATED).json({
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
       message: "User created succesfully",
-      user,
+      data: users,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    // console.log("Somthing wrong!!");
-    // res.status(httpStatus.BAD_REQUEST).json({
-    //   message: `Something wen wrong ${error.message}`,
+  },
+);
+
+const getAllUsers = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await UserServices.getAllUsers();
+    // res.status(httpStatus.OK).json({
+    //   success: true,
+    //   message: "All users retrieved successfully",
+    //   data: user,
     // });
-    next(error);
-  }
-};
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All users retrieved successfully",
+      data: result.data,
+      meta: result.meta,
+    });
+  },
+);
 
 export const userControllers = {
   createUser,
+  getAllUsers,
 };
