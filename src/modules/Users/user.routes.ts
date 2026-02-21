@@ -5,7 +5,7 @@ import z from "zod";
 const router = Router();
 router.post(
   "/register",
-  (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     const createUserZodSchema = z.object({
       name: z
         .string({ message: "Name must be string" })
@@ -35,6 +35,10 @@ router.post(
         .max(200, { message: "Address is too long" })
         .optional(),
     });
+
+    req.body = await createUserZodSchema.parseAsync(req.body);
+    console.log("Validation successful, proceeding to controller...", req.body);
+    next();
   },
   userControllers.createUser,
 );
