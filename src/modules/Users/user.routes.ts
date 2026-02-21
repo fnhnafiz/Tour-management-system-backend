@@ -38,7 +38,7 @@ router.post(
 
     req.body = await createUserZodSchema.parseAsync(req.body);
     console.log("Validation successful, proceeding to controller...", req.body);
-    // next();
+    next();
   },
   userControllers.createUser,
 );
